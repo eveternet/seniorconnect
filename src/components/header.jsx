@@ -4,9 +4,32 @@ import {
   SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
+  const LOCATION = useLocation();
+  let title;
+  switch (LOCATION.pathname) {
+    case "/interest-groups":
+      title = "Interest Groups";
+      break;
+    case "/":
+      title = "Home";
+      break;
+    case "/chat":
+      title = "Chat";
+      break;
+    case "/events":
+      title = "Events";
+      break;
+    case "/notifications":
+      title = "Notifications";
+      break;
+    default:
+      title = "Page Not Found";
+  }
+
+  document.title = `SeniorConnect - ${title}`;
   return (
     <nav className="sticky top-0 z-50 hidden h-20 flex-row bg-blue-300 md:flex">
       <Link to="/" className="mx-5 my-auto text-2xl">
