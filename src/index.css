@@ -9,3 +9,60 @@
     display: none;
   }
 }
+
+@theme {
+  --color-blue-100: #dceefb;
+  --color-blue-200: #b6e0fe;
+  --color-blue-300: #84c5f4;
+  --color-blue-400: #62b0e8;
+  --color-blue-500: #4098d7;
+  --color-blue-600: #2680c2;
+  --color-blue-700: #186faf;
+  --color-blue-800: #0f609b;
+  --color-blue-900: #0a558c;
+  --color-blue-950: #003e6b;
+
+  --color-neutral-100: #f0f4f8;
+  --color-neutral-200: #d9e2ec;
+  --color-neutral-300: #bcccdc;
+  --color-neutral-400: #9fb3c8;
+  --color-neutral-500: #829ab1;
+  --color-neutral-600: #627d98;
+  --color-neutral-700: #486581;
+  --color-neutral-800: #334e68;
+  --color-neutral-900: #243b53;
+  --color-neutral-950: #102a43;
+
+  --color-teal-100: #f0fcf9;
+  --color-teal-200: #c6f7e9;
+  --color-teal-300: #8eedd1;
+  --color-teal-400: #5fe3c0;
+  --color-teal-500: #2dcca7;
+  --color-teal-600: #17b897;
+  --color-teal-700: #079a82;
+  --color-teal-800: #048271;
+  --color-teal-900: #016457;
+  --color-teal-950: #004440;
+
+  --color-red-100: #ffeeee;
+  --color-red-200: #facdcd;
+  --color-red-300: #f29b9b;
+  --color-red-400: #e66a6a;
+  --color-red-500: #d64545;
+  --color-red-600: #ba2525;
+  --color-red-700: #a61b1b;
+  --color-red-800: #911111;
+  --color-red-900: #780a0a;
+  --color-red-950: #610404;
+
+  --color-yellow-100: #fffaeb;
+  --color-yellow-200: #fcefc7;
+  --color-yellow-300: #f8e3a3;
+  --color-yellow-400: #f9da8b;
+  --color-yellow-500: #f7d070;
+  --color-yellow-600: #e9b949;
+  --color-yellow-700: #c99a2e;
+  --color-yellow-800: #a27c1a;
+  --color-yellow-900: #7c5e10;
+  --color-yellow-950: #513c06;
+}
