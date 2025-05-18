@@ -46,7 +46,7 @@ export default function () {
           }}
         >
           <h1 className="relative top-1/4 left-15 w-fit text-5xl font-extrabold text-blue-100">
-            Join your favourite interest groups
+            Join your favourite interest groups today!!
           </h1>
           <button className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100">
             Join Now!
