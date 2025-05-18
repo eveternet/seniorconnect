@@ -7,4 +7,4 @@ Theme: Sustainability for Elderly
 
 Clone the repo
 
-If need logged in elements, talk to me for clerk keys
+If need logged in elements, talk to @eveternet for clerk keys
