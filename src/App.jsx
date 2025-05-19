@@ -4,6 +4,7 @@ import Navbar from "./components/header";
 import Interest from "./components/interest/interest";
 import NotFound from "./components/404/notfound";
 import Home from "./components/home/home";
+import SignIn from "./components/signin/signin";
 function App() {
   return (
     <>
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/interest-groups" element={<Interest />} />
+            <Route path="/signin" element={<SignIn />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

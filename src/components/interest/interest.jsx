@@ -1,10 +1,12 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function () {
   const { user, isLoaded } = useUser();
   const [interestGroupName, setInterestGroupName] = useState("");
   const [interestGroupDescription, setInterestGroupDescription] = useState("");
+  const navigate = useNavigate();
 
   function createInterestGroup() {
     let request_message = {
@@ -59,7 +61,7 @@ export default function () {
             backgroundPosition: "center",
           }}
         >
-          <h1 className="relative top-1/4 left-15 w-fit text-5xl font-extrabold text-blue-100">
+          <h1 className="relative top-1/4 left-15 w-10/12 text-5xl font-extrabold text-blue-100">
             Join your favourite interest groups!
           </h1>
           <button className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100">
@@ -76,7 +78,7 @@ export default function () {
             backgroundPosition: "center",
           }}
         >
-          <h1 className="relative top-5/8 left-15 w-fit text-5xl font-extrabold text-blue-100">
+          <h1 className="relative top-2/8 left-15 w-10/12 text-5xl font-extrabold text-blue-950">
             Nothing for you? Create your own group!
           </h1>
           <button className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100">
@@ -147,7 +149,10 @@ export default function () {
             </div>
           </SignedIn>
           <SignedOut>
-            <button className="mx-auto my-5 w-50 rounded-2xl bg-blue-900 p-5 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950">
+            <button
+              className="mx-auto my-5 w-50 rounded-2xl bg-blue-900 p-5 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
+              onClick={() => navigate("/signin")}
+            >
               Create one now!
             </button>
           </SignedOut>
