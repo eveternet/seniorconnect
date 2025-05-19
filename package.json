@@ -10,8 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.31.1",
+    "@clerk/clerk-react": "^5.31.4",
     "@tailwindcss/vite": "^4.1.6",
+    "@tanstack/react-router": "^1.120.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "sass": "^1.88.0",

@@ -1,6 +1,20 @@
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
+import { useState } from "react";
 
 export default function () {
+  const { user, isLoaded } = useUser();
+  const [interestGroupName, setInterestGroupName] = useState("");
+  const [interestGroupDescription, setInterestGroupDescription] = useState("");
+
+  function createInterestGroup() {
+    let request_message = {
+      user_id: user.id,
+      name: interestGroupName,
+      description: interestGroupDescription,
+    };
+    // Todo: ping backend with info when backend is built
+  }
+
   const interest_groups = [
     {
       name: "Chess",
@@ -102,7 +116,36 @@ export default function () {
           <h1 className="w-screen text-center text-2xl font-extrabold">
             Create your own interest group today!
           </h1>
-          <SignedIn></SignedIn>
+          <SignedIn>
+            {/* Create an interest group form */}
+            <div className="mx-auto my-5 h-fit w-4/5 rounded-2xl bg-blue-50 p-5 text-left text-blue-900 md:w-2xl">
+              <div>
+                <label className="block">Interest Group Name</label>
+                <input
+                  className="block w-full rounded-b-sm border-1 border-blue-500 px-2"
+                  type="text"
+                  placeholder="Interest Group Name"
+                  value={interestGroupName}
+                  onChange={(e) => setInterestGroupName(e.target.value)}
+                />
+              </div>
+              <div className="mt-5">
+                <label className="block">Description</label>
+                <textarea
+                  className="block h-20 w-full resize-none rounded-b-sm border-1 border-blue-500 px-2"
+                  placeholder="Insert description here"
+                  value={interestGroupDescription}
+                  onChange={(e) => setInterestGroupDescription(e.target.value)}
+                ></textarea>
+              </div>
+              <button
+                onClick={createInterestGroup}
+                className="mx-auto mt-5 rounded-2xl bg-blue-900 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
+              >
+                Create
+              </button>
+            </div>
+          </SignedIn>
           <SignedOut>
             <button className="mx-auto my-5 w-50 rounded-2xl bg-blue-900 p-5 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950">
               Create one now!
