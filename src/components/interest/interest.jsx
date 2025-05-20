@@ -1,9 +1,11 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../../api";
 
 export default function () {
   const { user, isLoaded } = useUser();
+  const [interest_groups, setInterestGroups] = useState([]);
   const [interestGroupName, setInterestGroupName] = useState("");
   const [interestGroupDescription, setInterestGroupDescription] = useState("");
   const navigate = useNavigate();
@@ -17,37 +19,15 @@ export default function () {
     // Todo: ping backend with info when backend is built
   }
 
-  const interest_groups = [
-    {
-      name: "Chess",
-      description:
-        "Play a fun game that keeps your brain sharp. Learn new moves!",
-    },
-    {
-      name: "Checkers",
-      description:
-        "A classic game! Easy to learn, fun to play. Use your thinking.",
-    },
-    {
-      name: "Mahjong",
-      description:
-        "Play with tiles! A classic game from far away. Good for your mind and friends.",
-    },
-    {
-      name: "Poker",
-      description:
-        "Play cards together! A fun game. Use your quick thinking. Just for fun!",
-    },
-    {
-      name: "Yoga",
-      description: "Gentle moves to feel good. Helps you bend and feel calm.",
-    },
-    {
-      name: "Photography",
-      description:
-        "Take pictures! Use your camera or phone. Show what you see.",
-    },
-  ];
+  useEffect(() => {
+    fetch(API_BASE_URL() + "/interest_groups/info")
+      .then((response) => {
+        console.log(response);
+        response.json();
+      })
+      .then((data) => setInterestGroups(data));
+  }, []);
+
   return (
     <>
       {/* Big screen images */}
