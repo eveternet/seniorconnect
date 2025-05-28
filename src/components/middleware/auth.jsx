@@ -4,6 +4,7 @@ import API_BASE_URL from "../../api";
 
 export default function () {
     const { isLoaded, user, isSignedIn } = useUser();
+    console.log(API_BASE_URL);
 
     const onboardUserIfNeeded = async () => {
         if (!isLoaded || !isSignedIn || !user) {
@@ -21,7 +22,7 @@ export default function () {
                 : null;
 
         try {
-            const response = await fetch(API_BASE_URL + "/user/auth", {
+            const response = await fetch(API_BASE_URL + "/users/auth", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
