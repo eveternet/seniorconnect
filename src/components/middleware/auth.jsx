@@ -13,13 +13,13 @@ export default function () {
 
         const clerkUserId = user.id;
         const userName =
-            user.first_name && user.last_name
-                ? `${user.first_name} ${user.last_name}`
+            user.firstName && user.LastName
+                ? `${user.firstName} ${user.lastName}`
                 : user.fullName || "Unknown User";
         console.log(user);
         const userPhone =
-            user.phone_numbers && user.phone_numbers.length > 0
-                ? user.phone_numbers[0].phone_number
+            user.phoneNumbers && user.phoneNumbers.length > 0
+                ? user.phoneNumbers[0].phoneNumber
                 : null;
 
         try {
