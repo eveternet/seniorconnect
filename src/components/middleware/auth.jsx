@@ -16,8 +16,10 @@ export default function () {
             user.first_name && user.last_name
                 ? `${user.first_name} ${user.last_name}`
                 : user.fullName || "Unknown User";
+        console.log(user.phone_numbers);
+        console.log(user.phone_numbers[0].phone_number);
         const userPhone =
-            user.phone_numbers && user.phoneNumbers.length > 0
+            user.phone_numbers && user.phone_numbers.length > 0
                 ? user.phone_numbers[0].phone_number
                 : null;
 
