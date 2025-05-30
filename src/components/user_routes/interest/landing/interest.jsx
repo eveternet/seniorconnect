@@ -87,25 +87,29 @@ export default function () {
                                 {interest_groups.map((item, index) => (
                                     <div
                                         key={item.id}
-                                        className="mx-auto my-5 w-5/11 rounded-2xl bg-blue-900 p-5 text-blue-100"
+                                        className="mx-auto my-5 w-full max-w-md cursor-pointer rounded-2xl bg-blue-900 p-5 text-blue-100 shadow-md transition hover:shadow-lg"
                                         onClick={() => navigate(`${item.id}`)}
+                                        style={{ minWidth: "250px" }}
                                     >
-                                        <h1 className="text-xl font-extrabold">
+                                        <h1 className="mb-1 text-xl font-extrabold">
                                             {item.name}
                                         </h1>
-                                        <h2 className="pb-0.5 font-bold">
+                                        <h2 className="mb-2 pb-0.5 font-bold text-blue-200">
                                             {item.creator_name}
                                         </h2>
-                                        <p>{truncate(item.description, 200)}</p>
+                                        <p className="mb-4 text-blue-100">
+                                            {truncate(item.description, 200)}
+                                        </p>
                                         <SignedIn>
                                             <button
-                                                onClick={() =>
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
                                                     joinInterestGroup(
                                                         user.id,
                                                         item.id,
-                                                    )
-                                                }
-                                                className="mt-5 mr-0 ml-auto w-full rounded-2xl bg-blue-800 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
+                                                    );
+                                                }}
+                                                className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-blue-900 transition duration-300 ease-in-out hover:bg-blue-200"
                                             >
                                                 Join Now!
                                             </button>

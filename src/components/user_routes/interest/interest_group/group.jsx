@@ -56,7 +56,7 @@ export default function InterestGroup() {
     }
 
     return (
-        <div className="mx-auto flex min-h-screen max-w-md flex-col items-center bg-blue-50 px-4 py-8">
+        <div className="mx-auto flex min-h-screen max-w-md flex-col items-center px-4 py-8">
             <div className="mb-6 w-full rounded-xl bg-white p-6 shadow-md">
                 <h1 className="mb-2 text-2xl font-bold text-blue-900">
                     {interestGroup.name}
