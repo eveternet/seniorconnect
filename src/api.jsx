@@ -15,7 +15,7 @@ export function truncate(str, n) {
 
 // INTEREST GROUPS API RESPONSES
 
-export function joinInterestGroup(clerk_id, interestGroupId) {
+export async function joinInterestGroup(clerk_id, interestGroupId) {
     let request_message = {
         clerk_user_id: clerk_id,
     };
@@ -40,7 +40,11 @@ export function joinInterestGroup(clerk_id, interestGroupId) {
         });
 }
 
-export function createInterestGroup(clerk_id, interestGroupName, description) {
+export async function createInterestGroup(
+    clerk_id,
+    interestGroupName,
+    description,
+) {
     if (isLoaded) {
         let request_message = {
             clerk_user_id: user.id,
