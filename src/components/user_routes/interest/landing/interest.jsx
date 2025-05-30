@@ -88,7 +88,7 @@ export default function () {
                                     <div
                                         key={item.id}
                                         className="mx-auto my-5 w-5/11 rounded-2xl bg-blue-900 p-5 text-blue-100"
-                                        onClick={() => navigate(`/${item.id}`)}
+                                        onClick={() => navigate(`${item.id}`)}
                                     >
                                         <h1 className="text-xl font-extrabold">
                                             {item.name}
@@ -105,7 +105,7 @@ export default function () {
                                                         item.id,
                                                     )
                                                 }
-                                                className="mt-5 mr-0 ml-auto rounded-2xl bg-blue-900 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
+                                                className="mt-5 mr-0 ml-auto w-full rounded-2xl bg-blue-800 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
                                             >
                                                 Join Now!
                                             </button>
