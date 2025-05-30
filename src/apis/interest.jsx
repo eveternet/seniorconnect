@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../api";
+
 export async function joinInterestGroup(clerk_id, interestGroupId) {
     let request_message = {
         clerk_user_id: clerk_id,
