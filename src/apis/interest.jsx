@@ -13,11 +13,9 @@ export async function joinInterestGroup(interestGroupId, clerk_id) {
     })
         .then((res) => res.json())
         .then((data) => {
-            alert("Interest group joined successfully!");
             console.log(data);
         })
         .catch((error) => {
-            alert("An error occurred during fetch or processing.");
             console.error(
                 "An error occurred during fetch or processing:",
                 error,
@@ -45,18 +43,15 @@ export async function createInterestGroup(
         })
             .then((res) => res.json())
             .then((data) => {
-                alert("Interest group applied successfully!");
                 console.log(data);
             })
             .catch((error) => {
-                alert("An error occurred during fetch or processing.");
                 console.error(
                     "An error occurred during fetch or processing:",
                     error,
                 );
             });
     } else {
-        alert("Please sign in to apply for an interest group.");
     }
 }
 

@@ -41,27 +41,18 @@ export default function OnboardUser() {
                 );
 
                 if (status === 400 || status === 422) {
-                    alert(
-                        `Onboarding failed: ${data.message}. Check console for details.`,
-                    );
                 } else if (status === 409) {
                     console.warn(
                         "User ID conflict during onboarding.",
                         data.message,
                     );
                 } else {
-                    alert(
-                        "An unexpected server error occurred during onboarding.",
-                    );
                 }
             }
         } catch (error) {
             console.error(
                 "Network or unhandled error during user onboarding:",
                 error,
-            );
-            alert(
-                "Could not connect to the backend. Please check your internet connection.",
             );
         }
     };
