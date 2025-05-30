@@ -1,5 +1,10 @@
-import { joinInterestGroup, getOneInterestGroup } from "../../../../api";
-import { SignedIn, SignedOut, useUser, SignInButton } from "@clerk/clerk-react";
+import {
+    joinInterestGroup,
+    leaveInterestGroup,
+    getOneInterestGroup,
+    isMemberOfGroup,
+} from "../../../../api";
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -9,9 +14,11 @@ export default function InterestGroup() {
     const [interestGroup, setInterestGroup] = useState(null);
     const [loading, setLoading] = useState(true);
     const [joinLoading, setJoinLoading] = useState(false);
+    const [isMember, setIsMember] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
+    // Fetch group info
     useEffect(() => {
         setLoading(true);
         getOneInterestGroup(id)
@@ -25,14 +32,37 @@ export default function InterestGroup() {
             });
     }, [id]);
 
+    // Check membership
+    useEffect(() => {
+        if (isLoaded && user) {
+            isMemberOfGroup(id, user.id)
+                .then(setIsMember)
+                .catch(() => setIsMember(false));
+        }
+    }, [id, isLoaded, user]);
+
     const handleJoin = async () => {
         if (!isLoaded || !user) return;
         setJoinLoading(true);
         try {
-            await joinInterestGroup(id, user.id); // assumes joinInterestGroup takes (groupId, clerkUserId)
+            await joinInterestGroup(id, user.id);
+            setIsMember(true);
             alert("Successfully joined the group!");
         } catch (err) {
             alert("Failed to join the group.");
+        }
+        setJoinLoading(false);
+    };
+
+    const handleLeave = async () => {
+        if (!isLoaded || !user) return;
+        setJoinLoading(true);
+        try {
+            await leaveInterestGroup(id, user.id);
+            setIsMember(false);
+            alert("You have left the group.");
+        } catch (err) {
+            alert("Failed to leave the group.");
         }
         setJoinLoading(false);
     };
@@ -69,13 +99,23 @@ export default function InterestGroup() {
                 </p>
             </div>
             <SignedIn>
-                <button
-                    onClick={handleJoin}
-                    disabled={joinLoading}
-                    className="w-full max-w-xs rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:bg-blue-800"
-                >
-                    {joinLoading ? "Joining..." : "Join Interest Group"}
-                </button>
+                {isMember ? (
+                    <button
+                        onClick={handleLeave}
+                        disabled={joinLoading}
+                        className="w-full max-w-xs rounded-lg bg-red-600 px-4 py-2 font-semibold text-white shadow transition hover:bg-red-700"
+                    >
+                        {joinLoading ? "Leaving..." : "Leave Interest Group"}
+                    </button>
+                ) : (
+                    <button
+                        onClick={handleJoin}
+                        disabled={joinLoading}
+                        className="w-full max-w-xs rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:bg-blue-800"
+                    >
+                        {joinLoading ? "Joining..." : "Join Interest Group"}
+                    </button>
+                )}
             </SignedIn>
             <SignedOut>
                 <button

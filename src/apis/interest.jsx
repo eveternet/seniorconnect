@@ -71,3 +71,25 @@ export async function getOneInterestGroup(id) {
     if (!res.ok) throw new Error("Failed to fetch interest groups");
     return res.json();
 }
+
+export async function leaveInterestGroup(groupId, clerkUserId) {
+    const res = await fetch(
+        `${API_BASE_URL}/interest_groups/leave/${groupId}`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ clerk_user_id: clerkUserId }),
+        },
+    );
+    if (!res.ok) throw new Error("Failed to leave interest group");
+    return res.json();
+}
+
+export async function isMemberOfGroup(groupId, clerkUserId) {
+    const res = await fetch(
+        `${API_BASE_URL}/interest_groups/members/${groupId}`,
+    );
+    if (!res.ok) throw new Error("Failed to fetch group members");
+    const data = await res.json();
+    return data.members.some((member) => member.clerk_user_id === clerkUserId);
+}

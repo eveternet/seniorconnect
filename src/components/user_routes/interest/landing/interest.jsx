@@ -7,6 +7,8 @@ import {
     handleScroll,
     createInterestGroup,
     getAllInterestGroups,
+    isMemberOfGroup,
+    leaveInterestGroup,
 } from "../../../../api";
 
 export default function () {
@@ -101,18 +103,25 @@ export default function () {
                                             {truncate(item.description, 200)}
                                         </p>
                                         <SignedIn>
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    joinInterestGroup(
-                                                        user.id,
-                                                        item.id,
-                                                    );
-                                                }}
-                                                className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-blue-900 transition duration-300 ease-in-out hover:bg-blue-200"
-                                            >
-                                                Join Now!
-                                            </button>
+                                            {membershipMap[item.id] ? (
+                                                <button
+                                                    onClick={(e) =>
+                                                        handleLeave(item.id, e)
+                                                    }
+                                                    className="block w-full rounded-2xl bg-red-500 px-5 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:bg-red-600"
+                                                >
+                                                    Leave Group
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={(e) =>
+                                                        handleJoin(item.id, e)
+                                                    }
+                                                    className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-blue-900 transition duration-300 ease-in-out hover:bg-blue-200"
+                                                >
+                                                    Join Now!
+                                                </button>
+                                            )}
                                         </SignedIn>
                                     </div>
                                 ))}
