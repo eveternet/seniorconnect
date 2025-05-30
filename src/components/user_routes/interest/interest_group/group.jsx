@@ -48,22 +48,22 @@ export default function InterestGroup() {
         setTimeout(() => setToast(""), 2000);
     };
 
-    const handleJoin = async (groupId, e) => {
+    const handleJoin = async (e) => {
         e.stopPropagation();
         try {
-            await joinInterestGroup(groupId, user.id);
-            setMembershipMap((prev) => ({ ...prev, [groupId]: true }));
+            await joinInterestGroup(id, user.id);
+            setIsMember(true);
             showToast("Joined group!");
         } catch {
             showToast("Failed to join group.");
         }
     };
 
-    const handleLeave = async (groupId, e) => {
+    const handleLeave = async (e) => {
         e.stopPropagation();
         try {
-            await leaveInterestGroup(groupId, user.id);
-            setMembershipMap((prev) => ({ ...prev, [groupId]: false }));
+            await leaveInterestGroup(id, user.id);
+            setIsMember(false);
             showToast("Left group.");
         } catch {
             showToast("Failed to leave group.");
