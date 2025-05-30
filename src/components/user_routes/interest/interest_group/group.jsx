@@ -5,11 +5,12 @@ import {
     isMemberOfGroup,
 } from "../../../../api";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Toast from "../../../other/toast";
 
 export default function InterestGroup() {
+    const toastTimeout = useRef(null);
     const { id } = useParams();
     const { user, isLoaded } = useUser();
     const [interestGroup, setInterestGroup] = useState(null);
@@ -45,7 +46,13 @@ export default function InterestGroup() {
 
     const showToast = (msg) => {
         setToast(msg);
-        setTimeout(() => setToast(""), 2000);
+        if (toastTimeout.current) {
+            clearTimeout(toastTimeout.current);
+        }
+        toastTimeout.current = setTimeout(() => {
+            setToast("");
+            toastTimeout.current = null;
+        }, 2000);
     };
 
     const handleJoin = async (e) => {

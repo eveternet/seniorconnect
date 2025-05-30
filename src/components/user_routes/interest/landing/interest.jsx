@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../../other/toast";
 
@@ -14,6 +14,7 @@ import {
 } from "../../../../api";
 
 export default function InterestGroupsList() {
+    const toastTimeout = useRef(null);
     const { user, isLoaded } = useUser();
     const [interestGroups, setInterestGroups] = useState([]);
     const [membershipMap, setMembershipMap] = useState({});
@@ -66,9 +67,14 @@ export default function InterestGroupsList() {
 
     const showToast = (msg) => {
         setToast(msg);
-        setTimeout(() => setToast(""), 2000);
+        if (toastTimeout.current) {
+            clearTimeout(toastTimeout.current);
+        }
+        toastTimeout.current = setTimeout(() => {
+            setToast("");
+            toastTimeout.current = null;
+        }, 2000);
     };
-
     // Join handler
     const handleJoin = async (groupId, e) => {
         e.stopPropagation();
