@@ -169,7 +169,7 @@ export default function InterestGroupsList() {
                                                 onClick={(e) =>
                                                     handleLeave(item.id, e)
                                                 }
-                                                className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-200"
+                                                className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-blue-900 transition duration-300 ease-in-out hover:bg-blue-200"
                                             >
                                                 Leave Group
                                             </button>
