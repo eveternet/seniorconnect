@@ -4,7 +4,6 @@ import API_BASE_URL from "../../api";
 
 export default function () {
     const { isLoaded, user, isSignedIn } = useUser();
-    console.log(API_BASE_URL);
 
     const onboardUserIfNeeded = async () => {
         if (!isLoaded || !isSignedIn || !user) {
@@ -16,10 +15,9 @@ export default function () {
             user.firstName && user.LastName
                 ? `${user.firstName} ${user.lastName}`
                 : user.fullName || "Unknown User";
-        console.log(user);
         const userPhone =
-            user.phoneNumbers && user.phoneNumbers.length > 0
-                ? user.phoneNumbers[0].phoneNumber
+            user.primaryPhoneNumber && user.primaryPhoneNumber.phoneNumber
+                ? user.primaryPhoneNumber.phoneNumber
                 : null;
 
         try {
@@ -39,10 +37,6 @@ export default function () {
 
             if (response.ok) {
                 if (response.status === 200) {
-                    console.log(
-                        "User already exists in DB:",
-                        responseData.message,
-                    );
                 } else if (response.status === 201) {
                     console.log("New user added to DB:", responseData.message);
                 } else {
