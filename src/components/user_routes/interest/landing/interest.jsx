@@ -11,27 +11,79 @@ import {
     leaveInterestGroup,
 } from "../../../../api";
 
-export default function () {
+export default function InterestGroupsList() {
     const { user, isLoaded } = useUser();
-    const [interest_groups, setInterestGroups] = useState([]);
+    const [interestGroups, setInterestGroups] = useState([]);
+    const [membershipMap, setMembershipMap] = useState({});
     const [interestGroupName, setInterestGroupName] = useState("");
     const [interestGroupDescription, setInterestGroupDescription] =
         useState("");
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    // Fetch all interest groups
     useEffect(() => {
+        setLoading(true);
         getAllInterestGroups()
-            .then((res) => res)
             .then((data) => {
                 setInterestGroups(data.groups);
+                setLoading(false);
             })
             .catch((error) => {
+                setLoading(false);
                 console.error(
                     "An error occurred during fetch or processing:",
                     error,
                 );
             });
     }, []);
+
+    // Check membership for each group (when user or groups change)
+    useEffect(() => {
+        if (isLoaded && user && interestGroups.length > 0) {
+            const checkAllMemberships = async () => {
+                const map = {};
+                await Promise.all(
+                    interestGroups.map(async (group) => {
+                        try {
+                            map[group.id] = await isMemberOfGroup(
+                                group.id,
+                                user.id,
+                            );
+                        } catch {
+                            map[group.id] = false;
+                        }
+                    }),
+                );
+                setMembershipMap(map);
+            };
+            checkAllMemberships();
+        }
+    }, [isLoaded, user, interestGroups]);
+
+    // Join handler
+    const handleJoin = async (groupId, e) => {
+        e.stopPropagation();
+        try {
+            await joinInterestGroup(groupId, user.id);
+            setMembershipMap((prev) => ({ ...prev, [groupId]: true }));
+            alert("Joined group!");
+        } catch {
+            alert("Failed to join group.");
+        }
+    };
+
+    // Leave handler
+    const handleLeave = async (groupId, e) => {
+        e.stopPropagation();
+        try {
+            await leaveInterestGroup(groupId, user.id);
+            setMembershipMap((prev) => ({ ...prev, [groupId]: false }));
+            alert("Left group.");
+        } catch {
+            alert("Failed to leave group.");
+        }
+    };
 
     return (
         <>
@@ -84,50 +136,50 @@ export default function () {
                         View all interest groups
                     </h1>
                     <div className="mx-25 flex flex-row flex-wrap">
-                        {Object.keys(interest_groups).length > 0 ? (
-                            <>
-                                {interest_groups.map((item, index) => (
-                                    <div
-                                        key={item.id}
-                                        className="mx-auto my-5 w-full max-w-md cursor-pointer rounded-2xl bg-blue-900 p-5 text-blue-100 shadow-md transition hover:shadow-lg"
-                                        onClick={() => navigate(`${item.id}`)}
-                                        style={{ minWidth: "250px" }}
-                                    >
-                                        <h1 className="mb-1 text-xl font-extrabold">
-                                            {item.name}
-                                        </h1>
-                                        <h2 className="mb-2 pb-0.5 font-bold text-blue-200">
-                                            {item.creator_name}
-                                        </h2>
-                                        <p className="mb-4 text-blue-100">
-                                            {truncate(item.description, 200)}
-                                        </p>
-                                        <SignedIn>
-                                            {membershipMap[item.id] ? (
-                                                <button
-                                                    onClick={(e) =>
-                                                        handleLeave(item.id, e)
-                                                    }
-                                                    className="block w-full rounded-2xl bg-red-500 px-5 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:bg-red-600"
-                                                >
-                                                    Leave Group
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    onClick={(e) =>
-                                                        handleJoin(item.id, e)
-                                                    }
-                                                    className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-blue-900 transition duration-300 ease-in-out hover:bg-blue-200"
-                                                >
-                                                    Join Now!
-                                                </button>
-                                            )}
-                                        </SignedIn>
-                                    </div>
-                                ))}
-                            </>
+                        {loading ? (
+                            <h2 className="w-full text-center">Loading...</h2>
+                        ) : interestGroups.length > 0 ? (
+                            interestGroups.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="mx-auto my-5 w-full max-w-md cursor-pointer rounded-2xl bg-blue-900 p-5 text-blue-100 shadow-md transition hover:shadow-lg"
+                                    onClick={() => navigate(`${item.id}`)}
+                                    style={{ minWidth: "250px" }}
+                                >
+                                    <h1 className="mb-1 text-xl font-extrabold">
+                                        {item.name}
+                                    </h1>
+                                    <h2 className="mb-2 pb-0.5 font-bold text-blue-200">
+                                        {item.creator_name}
+                                    </h2>
+                                    <p className="mb-4 text-blue-100">
+                                        {truncate(item.description, 200)}
+                                    </p>
+                                    <SignedIn>
+                                        {membershipMap[item.id] ? (
+                                            <button
+                                                onClick={(e) =>
+                                                    handleLeave(item.id, e)
+                                                }
+                                                className="block w-full rounded-2xl bg-red-500 px-5 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:bg-red-600"
+                                            >
+                                                Leave Group
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={(e) =>
+                                                    handleJoin(item.id, e)
+                                                }
+                                                className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-blue-900 transition duration-300 ease-in-out hover:bg-blue-200"
+                                            >
+                                                Join Now!
+                                            </button>
+                                        )}
+                                    </SignedIn>
+                                </div>
+                            ))
                         ) : (
-                            <h2 className="text-center">
+                            <h2 className="w-full text-center">
                                 Sorry, there are no interest groups right now.
                                 Try again later!
                             </h2>
