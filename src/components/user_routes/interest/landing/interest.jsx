@@ -1,7 +1,7 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API_BASE_URL from "../../api";
+import API_BASE_URL from "../../../../api";
 
 export default function () {
     const { user, isLoaded } = useUser();
