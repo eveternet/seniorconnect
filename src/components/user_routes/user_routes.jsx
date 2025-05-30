@@ -4,7 +4,7 @@ import Home from "./home/home";
 import InterestGroups from "./interest/routes";
 import SignIn from "./signin/signin";
 import SignUp from "./signin/signup";
-import Navbar from "./navbar/navbar"; // Assuming you have a Navbar
+import Navbar from "./navbar/header"; // Assuming you have a Navbar
 
 export default function UserRoutes() {
     return (
