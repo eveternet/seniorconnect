@@ -11,19 +11,49 @@ export default function () {
         useState("");
     const navigate = useNavigate();
 
+    function handleScroll(scrollID) {
+        const element = document.getElementById(scrollID);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
     function createInterestGroup() {
-        let request_message = {
-            user_id: user.id,
-            name: interestGroupName,
-            description: interestGroupDescription,
-        };
-        // Todo: ping backend with info when backend is built
+        if (isLoaded) {
+            let request_message = {
+                user_id: user.id,
+                name: interestGroupName,
+                description: interestGroupDescription,
+            };
+            fetch(API_BASE_URL + "/interest_groups/apply", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(request_message),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert("Interest group applied successfully!");
+                    console.log(data);
+                })
+                .catch((error) => {
+                    alert("An error occurred during fetch or processing.");
+                    console.error(
+                        "An error occurred during fetch or processing:",
+                        error,
+                    );
+                });
+        } else {
+            alert("Please sign in to apply for an interest group.");
+        }
     }
 
     useEffect(() => {
-        fetch(API_BASE_URL + "/interest-groups")
+        fetch(API_BASE_URL + "/interest_groups/info/all")
+            .then((res) => res.json())
             .then((data) => {
-                setInterestGroups(data.json());
+                setInterestGroups(data.groups);
             })
             .catch((error) => {
                 console.error(
@@ -49,7 +79,10 @@ export default function () {
                     <h1 className="relative top-1/4 left-15 w-10/12 text-5xl font-extrabold text-blue-100">
                         Join your favourite interest groups!
                     </h1>
-                    <button className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100">
+                    <button
+                        onClick={handleScroll("view-all-interest-groups")}
+                        className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100"
+                    >
                         Join Now!
                     </button>
                 </div>
@@ -66,13 +99,16 @@ export default function () {
                     <h1 className="relative top-2/8 left-15 w-10/12 text-5xl font-extrabold text-blue-950">
                         Nothing for you? Create your own group!
                     </h1>
-                    <button className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100">
+                    <button
+                        onClick={handleScroll("interest-group-creation")}
+                        className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100"
+                    >
                         Create One Today!
                     </button>
                 </div>
             </div>
             {/* View all interest groups */}
-            <div className="min-h-screen">
+            <div className="min-h-screen" id="view-all-interest-groups">
                 <div className="mx-auto mt-20">
                     <h1 className="w-screen text-center text-2xl font-extrabold">
                         View all interest groups
@@ -82,10 +118,11 @@ export default function () {
                             <>
                                 {interest_groups.map((item, index) => (
                                     <div
-                                        key={index}
+                                        key={item.id}
                                         className="mx-auto my-5 w-5/11 rounded-2xl bg-blue-900 p-5 text-blue-100"
                                     >
                                         <h1>{item.name}</h1>
+                                        <h2>{item.creator_name}</h2>
                                         <p>{item.description}</p>
                                     </div>
                                 ))}
@@ -100,7 +137,10 @@ export default function () {
                 </div>
 
                 {/* Create an interest group */}
-                <div className="mx-auto mt-20 text-center">
+                <div
+                    className="mx-auto mt-20 text-center"
+                    id="interest-group-creation"
+                >
                     <h1 className="w-screen text-center text-2xl font-extrabold">
                         Create your own interest group today!
                     </h1>

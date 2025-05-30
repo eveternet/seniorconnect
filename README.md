@@ -8,3 +8,7 @@ Theme: Sustainability for Elderly
 Clone the repo
 
 If need logged in elements, talk to @eveternet for clerk keys
+
+## Todo:
+
+- [ ] Make every alert() a popup

@@ -21,7 +21,7 @@ export default function () {
                 : null;
 
         try {
-            const response = await fetch(API_BASE_URL + "/user/auth", {
+            const response = await fetch(API_BASE_URL + "/auth", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
