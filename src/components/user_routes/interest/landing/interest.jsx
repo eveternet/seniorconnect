@@ -19,7 +19,7 @@ export default function () {
 
     useEffect(() => {
         getAllInterestGroups()
-            .then((res) => res.json())
+            .then((res) => res)
             .then((data) => {
                 setInterestGroups(data.groups);
             })
