@@ -21,7 +21,7 @@ export default function () {
     function createInterestGroup() {
         if (isLoaded) {
             let request_message = {
-                user_id: user.id,
+                clerk_user_id: user.id,
                 name: interestGroupName,
                 description: interestGroupDescription,
             };
@@ -80,7 +80,7 @@ export default function () {
                         Join your favourite interest groups!
                     </h1>
                     <button
-                        onClick={handleScroll("view-all-interest-groups")}
+                        onClick={() => handleScroll("view-all-interest-groups")}
                         className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100"
                     >
                         Join Now!
@@ -100,7 +100,7 @@ export default function () {
                         Nothing for you? Create your own group!
                     </h1>
                     <button
-                        onClick={handleScroll("interest-group-creation")}
+                        onClick={() => handleScroll("interest-group-creation")}
                         className="relative right-15 bottom-5 mt-auto ml-auto rounded-2xl border-blue-950 bg-blue-200 p-5 text-blue-900 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-100"
                     >
                         Create One Today!
