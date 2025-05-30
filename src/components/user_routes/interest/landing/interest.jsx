@@ -1,7 +1,8 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Toast from "../../other/toast";
+import Toast from "../../../other/toast";
+
 import {
     truncate,
     joinInterestGroup,
