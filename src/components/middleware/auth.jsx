@@ -1,18 +1,16 @@
 import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
-import { API_BASE_URL } from "../../api";
+import { onboardUser } from "../../api.jsx"; // <-- update this import
 
-export default function () {
+export default function OnboardUser() {
     const { isLoaded, user, isSignedIn } = useUser();
 
     const onboardUserIfNeeded = async () => {
-        if (!isLoaded || !isSignedIn || !user) {
-            return;
-        }
+        if (!isLoaded || !isSignedIn || !user) return;
 
         const clerkUserId = user.id;
         const userName =
-            user.firstName && user.LastName
+            user.firstName && user.lastName
                 ? `${user.firstName} ${user.lastName}`
                 : user.fullName || "Unknown User";
         const userPhone =
@@ -21,45 +19,35 @@ export default function () {
                 : null;
 
         try {
-            const response = await fetch(API_BASE_URL + "/auth", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    clerk_user_id: clerkUserId,
-                    name: userName,
-                    phone: userPhone,
-                }),
+            const { status, ok, data } = await onboardUser({
+                clerk_user_id: clerkUserId,
+                name: userName,
+                phone: userPhone,
             });
 
-            const responseData = await response.json().catch(() => ({}));
-
-            if (response.ok) {
-                if (response.status === 200) {
-                } else if (response.status === 201) {
-                    console.log("New user added to DB:", responseData.message);
+            if (ok) {
+                if (status === 200) {
+                    // User already exists, do nothing or log if needed
+                } else if (status === 201) {
+                    console.log("New user added to DB:", data.message);
                 } else {
-                    console.warn(
-                        `Unexpected 2xx status: ${response.status}`,
-                        responseData,
-                    );
+                    console.warn(`Unexpected 2xx status: ${status}`, data);
                 }
             } else {
                 console.error(
-                    `Backend onboarding error: Status ${response.status}`,
-                    responseData.message || "Unknown error",
-                    responseData.errors || "",
+                    `Backend onboarding error: Status ${status}`,
+                    data.message || "Unknown error",
+                    data.errors || "",
                 );
 
-                if (response.status === 400 || response.status === 422) {
+                if (status === 400 || status === 422) {
                     alert(
-                        `Onboarding failed: ${responseData.message}. Check console for details.`,
+                        `Onboarding failed: ${data.message}. Check console for details.`,
                     );
-                } else if (response.status === 409) {
+                } else if (status === 409) {
                     console.warn(
                         "User ID conflict during onboarding.",
-                        responseData.message,
+                        data.message,
                     );
                 } else {
                     alert(
@@ -79,13 +67,10 @@ export default function () {
     };
 
     useEffect(() => {
-        // Ensure function is memoized if it's not defined within useEffect itself,
-        // or add to dependency array if you understand the implications.
-        // For simplicity and typical use case with stable dependencies:
         if (isLoaded && isSignedIn && user) {
             onboardUserIfNeeded();
         }
-    }, [isLoaded, isSignedIn, user]); // onboardUserIfNeeded is not in deps if it's stable and always based on these.
+    }, [isLoaded, isSignedIn, user]);
 
-    return <></>;
+    return null;
 }

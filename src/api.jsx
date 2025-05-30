@@ -14,3 +14,4 @@ export function truncate(str, n) {
 }
 
 export * from "./apis/interest";
+export * from "./apis/auth";
