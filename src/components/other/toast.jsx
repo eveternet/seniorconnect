@@ -4,11 +4,14 @@ export default function Toast({ message, onClose, duration = 2000 }) {
     const [visible, setVisible] = useState(false);
     const [internalMessage, setInternalMessage] = useState("");
 
-    // When message changes, show toast
+    // When message changes, show toast with fade-in
     useEffect(() => {
         if (message) {
             setInternalMessage(message);
-            setVisible(true);
+            setVisible(false); // Start hidden
+            // Next tick, show (fade in)
+            setTimeout(() => setVisible(true), 10);
+            // Hide after duration
             const hideTimeout = setTimeout(() => setVisible(false), duration);
             return () => clearTimeout(hideTimeout);
         }
