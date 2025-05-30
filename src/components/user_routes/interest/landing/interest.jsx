@@ -1,7 +1,13 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import API_BASE_URL from "../../../../api";
+import {
+    truncate,
+    joinInterestGroup,
+    handleScroll,
+    createInterestGroup,
+    getAllInterestGroups,
+} from "../../../../api";
 
 export default function () {
     const { user, isLoaded } = useUser();
@@ -11,46 +17,8 @@ export default function () {
         useState("");
     const navigate = useNavigate();
 
-    function handleScroll(scrollID) {
-        const element = document.getElementById(scrollID);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-        }
-    }
-
-    function createInterestGroup() {
-        if (isLoaded) {
-            let request_message = {
-                clerk_user_id: user.id,
-                name: interestGroupName,
-                description: interestGroupDescription,
-            };
-            fetch(API_BASE_URL + "/interest_groups/apply", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(request_message),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert("Interest group applied successfully!");
-                    console.log(data);
-                })
-                .catch((error) => {
-                    alert("An error occurred during fetch or processing.");
-                    console.error(
-                        "An error occurred during fetch or processing:",
-                        error,
-                    );
-                });
-        } else {
-            alert("Please sign in to apply for an interest group.");
-        }
-    }
-
     useEffect(() => {
-        fetch(API_BASE_URL + "/interest_groups/info/all")
+        getAllInterestGroups()
             .then((res) => res.json())
             .then((data) => {
                 setInterestGroups(data.groups);
@@ -120,10 +88,28 @@ export default function () {
                                     <div
                                         key={item.id}
                                         className="mx-auto my-5 w-5/11 rounded-2xl bg-blue-900 p-5 text-blue-100"
+                                        onClick={() => navigate(`/${item.id}`)}
                                     >
-                                        <h1>{item.name}</h1>
-                                        <h2>{item.creator_name}</h2>
-                                        <p>{item.description}</p>
+                                        <h1 className="text-xl font-extrabold">
+                                            {item.name}
+                                        </h1>
+                                        <h2 className="pb-0.5 font-bold">
+                                            {item.creator_name}
+                                        </h2>
+                                        <p>{truncate(item.description, 200)}</p>
+                                        <SignedIn>
+                                            <button
+                                                onClick={() =>
+                                                    joinInterestGroup(
+                                                        user.id,
+                                                        item.id,
+                                                    )
+                                                }
+                                                className="mx-auto mt-5 rounded-2xl bg-blue-900 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
+                                            >
+                                                Join Now!
+                                            </button>
+                                        </SignedIn>
                                     </div>
                                 ))}
                             </>
@@ -175,7 +161,13 @@ export default function () {
                                 ></textarea>
                             </div>
                             <button
-                                onClick={createInterestGroup}
+                                onClick={() =>
+                                    createInterestGroup(
+                                        user.id,
+                                        interestGroupName,
+                                        interestGroupDescription,
+                                    )
+                                }
                                 className="mx-auto mt-5 rounded-2xl bg-blue-900 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
                             >
                                 Create

@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
-import API_BASE_URL from "../../api";
+import { API_BASE_URL } from "../../api";
 
 export default function () {
     const { isLoaded, user, isSignedIn } = useUser();
