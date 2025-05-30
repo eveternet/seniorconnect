@@ -105,7 +105,7 @@ export default function () {
                                                         item.id,
                                                     )
                                                 }
-                                                className="mx-auto mt-5 rounded-2xl bg-blue-900 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
+                                                className="mt-5 mr-0 ml-auto rounded-2xl bg-blue-900 px-5 py-1 text-center text-blue-100 transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-950"
                                             >
                                                 Join Now!
                                             </button>
