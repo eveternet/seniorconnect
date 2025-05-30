@@ -1,6 +1,7 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Toast from "../../other/toast";
 import {
     truncate,
     joinInterestGroup,
@@ -20,6 +21,7 @@ export default function InterestGroupsList() {
         useState("");
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const [toast, setToast] = useState("");
 
     // Fetch all interest groups
     useEffect(() => {
@@ -61,32 +63,37 @@ export default function InterestGroupsList() {
         }
     }, [isLoaded, user, interestGroups]);
 
+    const showToast = (msg) => {
+        setToast(msg);
+        setTimeout(() => setToast(""), 2000);
+    };
+
     // Join handler
     const handleJoin = async (groupId, e) => {
         e.stopPropagation();
         try {
             await joinInterestGroup(groupId, user.id);
             setMembershipMap((prev) => ({ ...prev, [groupId]: true }));
-            alert("Joined group!");
+            showToast("Joined group!");
         } catch {
-            alert("Failed to join group.");
+            showToast("Failed to join group.");
         }
     };
 
-    // Leave handler
     const handleLeave = async (groupId, e) => {
         e.stopPropagation();
         try {
             await leaveInterestGroup(groupId, user.id);
             setMembershipMap((prev) => ({ ...prev, [groupId]: false }));
-            alert("Left group.");
+            showToast("Left group.");
         } catch {
-            alert("Failed to leave group.");
+            showToast("Failed to leave group.");
         }
     };
 
     return (
         <>
+            <Toast message={toast} onClose={() => setToast("")} />
             {/* Big screen images */}
             <div className="h-screen">
                 <div
@@ -161,7 +168,7 @@ export default function InterestGroupsList() {
                                                 onClick={(e) =>
                                                     handleLeave(item.id, e)
                                                 }
-                                                className="block w-full rounded-2xl bg-red-500 px-5 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:bg-red-600"
+                                                className="block w-full rounded-2xl bg-blue-100 px-5 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-200"
                                             >
                                                 Leave Group
                                             </button>
