@@ -93,8 +93,8 @@ export default function InterestGroupsList() {
             await leaveInterestGroup(groupId, user.id);
             setMembershipMap((prev) => ({ ...prev, [groupId]: false }));
             showToast("Left group.");
-        } catch {
-            showToast("Failed to leave group.");
+        } catch (err) {
+            showToast(err.message || "Failed to leave group.");
         }
     };
 

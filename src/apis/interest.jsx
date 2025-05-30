@@ -76,8 +76,12 @@ export async function leaveInterestGroup(groupId, clerkUserId) {
             body: JSON.stringify({ clerk_user_id: clerkUserId }),
         },
     );
-    if (!res.ok) throw new Error("Failed to leave interest group");
-    return res.json();
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+        // Throw the error message from backend if available
+        throw new Error(data.error || data.message || "Failed to leave group.");
+    }
+    return data;
 }
 
 export async function isMemberOfGroup(groupId, clerkUserId) {

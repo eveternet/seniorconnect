@@ -72,8 +72,8 @@ export default function InterestGroup() {
             await leaveInterestGroup(id, user.id);
             setIsMember(false);
             showToast("Left group.");
-        } catch {
-            showToast("Failed to leave group.");
+        } catch (err) {
+            showToast(err.message || "Failed to leave group.");
         }
     };
 
