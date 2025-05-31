@@ -222,7 +222,7 @@ export default function InterestGroup() {
                                     );
                                     setEditMode(true);
                                 }}
-                                className="rounded bg-blue-700 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+                                className="mx-auto rounded bg-blue-900 px-4 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-800"
                             >
                                 Edit Group Info
                             </button>
@@ -267,7 +267,7 @@ export default function InterestGroup() {
                                     <button
                                         type="submit"
                                         disabled={editLoading}
-                                        className="rounded bg-blue-700 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+                                        className="rounded bg-blue-900 px-4 py-2 font-semibold text-white transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-800"
                                     >
                                         {editLoading ? "Saving..." : "Save"}
                                     </button>
@@ -298,13 +298,16 @@ export default function InterestGroup() {
                                 className="rounded border px-2 py-1"
                                 required
                             >
-                                <option value="">Select new owner</option>
+                                <option value="" className="bg-white">
+                                    Select new owner
+                                </option>
                                 {members
                                     .filter((m) => m.clerk_user_id !== user.id) // can't transfer to self
                                     .map((m) => (
                                         <option
                                             key={m.user_id}
                                             value={m.user_id}
+                                            className="bg-white"
                                         >
                                             {m.display_name}
                                         </option>
@@ -313,7 +316,7 @@ export default function InterestGroup() {
                             <button
                                 type="submit"
                                 disabled={transferLoading || !transferTo}
-                                className="rounded bg-blue-700 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+                                className="rounded bg-blue-900 px-4 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-800"
                             >
                                 {transferLoading
                                     ? "Transferring..."
