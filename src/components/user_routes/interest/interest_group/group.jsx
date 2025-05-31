@@ -3,6 +3,7 @@ import {
     leaveInterestGroup,
     getOneInterestGroup,
     isMemberOfGroup,
+    editInterestGroup,
 } from "../../../../api";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
@@ -20,6 +21,18 @@ export default function InterestGroup() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [toast, setToast] = useState("");
+    const [editMode, setEditMode] = useState(false);
+    const [editName, setEditName] = useState(interestGroup?.name || "");
+    const [editDescription, setEditDescription] = useState(
+        interestGroup?.description || "",
+    );
+    const [editImageUrl, setEditImageUrl] = useState(
+        interestGroup?.image_url || "",
+    );
+    const [editLoading, setEditLoading] = useState(false);
+
+    const isCreator =
+        user && interestGroup && user.id === interestGroup.creator_id; // or compare clerk_user_id if that's what you store
 
     // Fetch group info
     useEffect(() => {
@@ -75,6 +88,30 @@ export default function InterestGroup() {
         } catch (err) {
             showToast(err.message || "Failed to leave group.");
         }
+    };
+
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        setEditLoading(true);
+        try {
+            await editInterestGroup(interestGroup.id, user.id, {
+                name: editName,
+                description: editDescription,
+                image_url: editImageUrl,
+            });
+            setEditMode(false);
+            // Optionally, update local state:
+            setInterestGroup((prev) => ({
+                ...prev,
+                name: editName,
+                description: editDescription,
+                image_url: editImageUrl,
+            }));
+            showToast("Group updated!");
+        } catch (err) {
+            showToast(err.message || "Failed to update group.");
+        }
+        setEditLoading(false);
     };
 
     if (loading) {
@@ -139,6 +176,82 @@ export default function InterestGroup() {
                         Sign in to join
                     </button>
                 </SignedOut>
+
+                {isCreator && (
+                    <div className="mt-6 w-full">
+                        {!editMode ? (
+                            <button
+                                onClick={() => {
+                                    setEditName(interestGroup.name);
+                                    setEditDescription(
+                                        interestGroup.description,
+                                    );
+                                    setEditImageUrl(
+                                        interestGroup.image_url || "",
+                                    );
+                                    setEditMode(true);
+                                }}
+                                className="rounded bg-blue-700 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+                            >
+                                Edit Group Info
+                            </button>
+                        ) : (
+                            <form
+                                onSubmit={handleEdit}
+                                className="mt-4 flex flex-col gap-4 rounded-xl bg-blue-50 p-4"
+                            >
+                                <label>
+                                    Name:
+                                    <input
+                                        className="mt-1 block w-full rounded border px-2 py-1"
+                                        value={editName}
+                                        onChange={(e) =>
+                                            setEditName(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Description:
+                                    <textarea
+                                        className="mt-1 block w-full rounded border px-2 py-1"
+                                        value={editDescription}
+                                        onChange={(e) =>
+                                            setEditDescription(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Image URL:
+                                    <input
+                                        className="mt-1 block w-full rounded border px-2 py-1"
+                                        value={editImageUrl}
+                                        onChange={(e) =>
+                                            setEditImageUrl(e.target.value)
+                                        }
+                                    />
+                                </label>
+                                <div className="flex gap-2">
+                                    <button
+                                        type="submit"
+                                        disabled={editLoading}
+                                        className="rounded bg-blue-700 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+                                    >
+                                        {editLoading ? "Saving..." : "Save"}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setEditMode(false)}
+                                        className="rounded bg-gray-300 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-400"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
+                )}
             </div>
         </>
     );

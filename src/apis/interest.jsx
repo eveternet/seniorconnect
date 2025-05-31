@@ -92,3 +92,21 @@ export async function isMemberOfGroup(groupId, clerkUserId) {
     const data = await res.json();
     return data.members.some((member) => member.clerk_user_id === clerkUserId);
 }
+
+export async function editInterestGroup(groupId, clerkUserId, updates) {
+    const res = await fetch(`${API_BASE_URL}/interest_groups/edit/${groupId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            clerk_user_id: clerkUserId,
+            ...updates, // e.g. { name, description, image_url }
+        }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+        throw new Error(
+            data.error || data.message || "Failed to update group.",
+        );
+    }
+    return data;
+}
