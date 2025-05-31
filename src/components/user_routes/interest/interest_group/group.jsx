@@ -63,6 +63,7 @@ export default function InterestGroup() {
             .catch((error) => {
                 setError("Could not load interest group.");
                 setLoading(false);
+                navigate("../");
             });
     }, [id]);
 
