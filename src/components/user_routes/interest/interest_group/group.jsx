@@ -21,8 +21,13 @@ export default function InterestGroup() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [toast, setToast] = useState("");
+    const [creatorClerkId, setCreatorClerkId] = useState(null);
+    const [members, setMembers] = useState([]);
+    const [transferTo, setTransferTo] = useState("");
+    const [transferLoading, setTransferLoading] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [editName, setEditName] = useState(interestGroup?.name || "");
+
     const [editDescription, setEditDescription] = useState(
         interestGroup?.description || "",
     );
@@ -31,8 +36,18 @@ export default function InterestGroup() {
     );
     const [editLoading, setEditLoading] = useState(false);
 
-    const isCreator =
-        user && interestGroup && user.id === interestGroup.creator_id; // or compare clerk_user_id if that's what you store
+    const isCreator = user && creatorClerkId && user.id === creatorClerkId;
+
+    useEffect(() => {
+        if (id) {
+            getGroupCreatorClerkId(id)
+                .then(setCreatorClerkId)
+                .catch(() => setCreatorClerkId(null));
+            getGroupMembers(id)
+                .then(setMembers)
+                .catch(() => setMembers([]));
+        }
+    }, [id]);
 
     // Fetch group info
     useEffect(() => {
@@ -48,6 +63,19 @@ export default function InterestGroup() {
             });
     }, [id]);
 
+    const handleTransfer = async (e) => {
+        e.preventDefault();
+        if (!transferTo) return;
+        setTransferLoading(true);
+        try {
+            await transferGroupOwnership(id, user.id, transferTo);
+            showToast("Ownership transferred!");
+            // Optionally, refetch creatorClerkId and members
+        } catch (err) {
+            showToast(err.message || "Failed to transfer ownership.");
+        }
+        setTransferLoading(false);
+    };
     // Check membership
     useEffect(() => {
         if (isLoaded && user) {
@@ -250,6 +278,45 @@ export default function InterestGroup() {
                                 </div>
                             </form>
                         )}
+                    </div>
+                )}
+                {isCreator && (
+                    <div className="mt-6 w-full">
+                        <h3 className="mb-2 font-bold">
+                            Transfer Group Ownership
+                        </h3>
+                        <form
+                            onSubmit={handleTransfer}
+                            className="flex flex-col gap-2"
+                        >
+                            <select
+                                value={transferTo}
+                                onChange={(e) => setTransferTo(e.target.value)}
+                                className="rounded border px-2 py-1"
+                                required
+                            >
+                                <option value="">Select new owner</option>
+                                {members
+                                    .filter((m) => m.clerk_user_id !== user.id) // can't transfer to self
+                                    .map((m) => (
+                                        <option
+                                            key={m.user_id}
+                                            value={m.user_id}
+                                        >
+                                            {m.display_name}
+                                        </option>
+                                    ))}
+                            </select>
+                            <button
+                                type="submit"
+                                disabled={transferLoading || !transferTo}
+                                className="rounded bg-blue-700 px-4 py-2 font-semibold text-white hover:bg-blue-800"
+                            >
+                                {transferLoading
+                                    ? "Transferring..."
+                                    : "Transfer Ownership"}
+                            </button>
+                        </form>
                     </div>
                 )}
             </div>
