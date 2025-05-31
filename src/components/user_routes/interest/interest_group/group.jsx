@@ -223,7 +223,7 @@ export default function InterestGroup() {
                                     );
                                     setEditMode(true);
                                 }}
-                                className="mx-auto rounded bg-blue-900 px-4 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-800"
+                                className="mx-auto w-full rounded bg-blue-900 px-4 py-2 text-center font-semibold text-white transition duration-300 ease-in-out hover:cursor-pointer hover:bg-blue-800"
                             >
                                 Edit Group Info
                             </button>
