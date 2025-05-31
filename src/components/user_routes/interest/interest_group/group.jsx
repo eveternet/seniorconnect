@@ -245,7 +245,7 @@ export default function InterestGroup() {
                                 <label>
                                     Description:
                                     <textarea
-                                        className="mt-1 block w-full rounded border px-2 py-1"
+                                        className="mt-1 block w-full resize-none rounded border px-2 py-1"
                                         value={editDescription}
                                         onChange={(e) =>
                                             setEditDescription(e.target.value)
