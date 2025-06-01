@@ -135,12 +135,12 @@ export default function Header() {
             </nav>
             {displayAdminButton && (
                 <nav className="flex h-6 flex-row border-b-1 bg-black text-left text-base">
-                    <p className="mr-auto ml-0 py-0.25 text-white">
+                    <p className="mr-auto ml-5 py-0.25 text-white">
                         Logged in as admin
                     </p>
                     <Link
                         to="/admin"
-                        className="mr-0 ml-auto cursor-pointer py-0.25 text-white"
+                        className="mr-5 ml-auto cursor-pointer py-0.25 text-white"
                     >
                         {" "}
                         Admin Panel{" "}
