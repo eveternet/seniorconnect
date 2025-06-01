@@ -10,4 +10,3 @@ export default function InterestGroupsRoutes() {
         </Routes>
     );
 }
-z;
