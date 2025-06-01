@@ -4,7 +4,7 @@ export default function Navbar() {
     // sidebar navbar
     return (
         <>
-            <div className="flex h-screen w-60 flex-col bg-blue-900">
+            <div className="fixed flex h-screen w-60 flex-col bg-blue-900">
                 <Link
                     to="/admin"
                     className="mx-5 cursor-pointer py-3 pt-5 text-left text-base text-blue-100"
