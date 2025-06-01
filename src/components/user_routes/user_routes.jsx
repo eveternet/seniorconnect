@@ -9,7 +9,7 @@ import Navbar from "./navbar/header"; // Assuming you have a Navbar
 export default function UserRoutes() {
     return (
         <>
-            <div className="bg-blue-200">
+            <div className="min-h-screen bg-blue-200">
                 <Navbar />
                 <Routes>
                     <Route path="signin" element={<SignIn />} />
