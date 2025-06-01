@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
-import { onboardUser } from "../../api.jsx"; // <-- update this import
+import { onboardUser } from "../../api.jsx";
 
 export default function OnboardUser() {
     const { isLoaded, user, isSignedIn } = useUser();

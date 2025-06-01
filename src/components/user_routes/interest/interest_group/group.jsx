@@ -41,6 +41,8 @@ export default function InterestGroup() {
 
     const isCreator = user && creatorClerkId && user.id === creatorClerkId;
 
+    document.title = "SeniorConnect - Interest Group";
+
     useEffect(() => {
         if (id) {
             getGroupCreatorClerkId(id)

@@ -2,7 +2,6 @@ import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../../other/toast";
-
 import {
     truncate,
     joinInterestGroup,
@@ -24,6 +23,8 @@ export default function InterestGroupsList() {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [toast, setToast] = useState("");
+
+    document.title = "SeniorConnect - Interest Group";
 
     // Fetch all interest groups
     useEffect(() => {

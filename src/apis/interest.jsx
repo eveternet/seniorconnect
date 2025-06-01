@@ -30,9 +30,9 @@ export async function createInterestGroup(
 ) {
     if (isLoaded) {
         let request_message = {
-            clerk_user_id: user.id,
+            clerk_user_id: clerk_id,
             name: interestGroupName,
-            description: interestGroupDescription,
+            description: description,
         };
         fetch(API_BASE_URL + "/interest_groups/apply", {
             method: "POST",
