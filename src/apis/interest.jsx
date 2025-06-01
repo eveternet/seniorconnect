@@ -152,3 +152,39 @@ export async function transferGroupOwnership(
     if (!res.ok) throw new Error(data.error || "Failed to transfer ownership.");
     return data;
 }
+
+export async function getPendingApplications() {
+    const res = await fetch(`${API_BASE_URL}/interest_groups/applications`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to fetch applications.");
+    return data.applications;
+}
+
+export async function approveApplication(applicationId, clerkUserId) {
+    const res = await fetch(
+        `${API_BASE_URL}/interest_groups/application/${applicationId}/approve`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ clerk_user_id: clerkUserId }),
+        },
+    );
+    const data = await res.json();
+    if (!res.ok)
+        throw new Error(data.error || "Failed to approve application.");
+    return data;
+}
+
+export async function rejectApplication(applicationId, clerkUserId) {
+    const res = await fetch(
+        `${API_BASE_URL}/interest_groups/application/${applicationId}/reject`,
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ clerk_user_id: clerkUserId }),
+        },
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to reject application.");
+    return data;
+}
