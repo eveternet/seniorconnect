@@ -1,13 +1,15 @@
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { isUserAdmin } from "../../../api";
 
 export default function Header() {
     const [isSidebarHidden, setIsSidebarHidden] = useState(true);
-    const [sidebarClass, setSidebarClass] = useState("hidden");
+    const [sidebarClass, setSidebarClass] = useState("fixed");
     const [displayAdminButton, setDisplayAdminButton] = useState(false);
+    const LOCATION = useLocation();
     const { user, isLoaded } = useUser();
+
     function toggleSidebar() {
         setIsSidebarHidden(!isSidebarHidden);
         if (isSidebarHidden) {
@@ -16,6 +18,9 @@ export default function Header() {
             setSidebarClass("fixed");
         }
     }
+    useEffect(() => {
+        toggleSidebar();
+    }, [LOCATION]);
 
     useEffect(() => {
         if (isLoaded && user) {
