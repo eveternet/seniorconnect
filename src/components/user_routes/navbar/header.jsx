@@ -43,29 +43,13 @@ export default function Header() {
                 <Link to="/" className="mx-5 my-auto text-2xl">
                     SeniorConnect
                 </Link>
-                {(displayAdminButton && (
-                    <>
-                        <Link to="/admin" className="my-auto mr-3 ml-auto p-2">
-                            Admin
-                        </Link>
-                        <Link to="/notifications" className="mx-3 my-auto p-2">
-                            <img
-                                src="https://4mn50hplg9.ufs.sh/f/0pp0UyuwO4xWHPNPkvT4KM8x9F6kgruRBD3YTmSIcGbefXCA"
-                                className="h-6 w-6"
-                            />
-                        </Link>
-                    </>
-                )) || (
-                    <Link
-                        to="/notifications"
-                        className="my-auto mr-3 ml-auto p-2"
-                    >
-                        <img
-                            src="https://4mn50hplg9.ufs.sh/f/0pp0UyuwO4xWHPNPkvT4KM8x9F6kgruRBD3YTmSIcGbefXCA"
-                            className="h-6 w-6"
-                        />
-                    </Link>
-                )}
+
+                <Link to="/notifications" className="my-auto mr-3 ml-auto p-2">
+                    <img
+                        src="https://4mn50hplg9.ufs.sh/f/0pp0UyuwO4xWHPNPkvT4KM8x9F6kgruRBD3YTmSIcGbefXCA"
+                        className="h-6 w-6"
+                    />
+                </Link>
 
                 <Link to="/chat" className="mx-3 my-auto p-2">
                     Chat
@@ -149,6 +133,20 @@ export default function Header() {
                     </SignedIn>
                 </div>
             </nav>
+            {displayAdminButton && (
+                <nav className="flex h-5 flex-col border-b-1 bg-black text-left text-lg">
+                    <p className="pr-auto pl-0 text-white">
+                        Logged in as admin
+                    </p>
+                    <Link
+                        to="/admin"
+                        className="pl-auto cursor-pointer pr-0 text-white"
+                    >
+                        {" "}
+                        Admin Panel{" "}
+                    </Link>
+                </nav>
+            )}
         </>
     );
 }
