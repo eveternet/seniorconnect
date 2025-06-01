@@ -35,7 +35,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                     to="/admin/events"
-                    className="mx-5 cursor-pointer border-t border-solid border-blue-100 py-5 text-left text-base text-blue-100"
+                    className="mx-5 cursor-pointer border-t border-solid border-blue-100 text-left text-base text-blue-100"
                 >
                     {" "}
                     Events{" "}
