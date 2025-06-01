@@ -8,12 +8,19 @@ import NotFound from "./notfound";
 export default function Admin_routes() {
     return (
         <>
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/interest-groups/*" element={<InterestGroup />} />
-                <Route path="/*" element={<NotFound />} />
-            </Routes>
+            <div className="flex flex-row">
+                <Navbar />
+                <div className="w- ml-40">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/interest-groups/*"
+                            element={<InterestGroup />}
+                        />
+                        <Route path="/*" element={<NotFound />} />
+                    </Routes>
+                </div>
+            </div>
         </>
     );
 }
