@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { isUserAdmin } from "../../../api";
 
 export default function Header() {
