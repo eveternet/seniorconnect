@@ -134,7 +134,7 @@ export default function Header() {
                 </div>
             </nav>
             {displayAdminButton && (
-                <nav className="flex h-5 flex-col border-b-1 bg-black text-left text-lg">
+                <nav className="flex h-5 flex-col border-b-1 bg-black text-left text-base">
                     <p className="pr-auto pl-0 text-white">
                         Logged in as admin
                     </p>
