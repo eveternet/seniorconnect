@@ -7,7 +7,7 @@ export default function Navbar() {
             <div className="flex h-screen w-60 flex-col bg-blue-900">
                 <Link
                     to="/admin"
-                    className="mx-5 cursor-pointer border-t border-solid border-blue-100 pt-5 text-left text-base text-blue-100"
+                    className="mx-5 cursor-pointer pt-5 text-left text-base text-blue-100"
                 >
                     {" "}
                     SeniorConnect{" "}
