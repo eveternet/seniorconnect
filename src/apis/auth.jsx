@@ -15,3 +15,16 @@ export async function onboardUser({ clerk_user_id, name, phone }) {
     // Return both status and data for handling in the component
     return { status: response.status, ok: response.ok, data: responseData };
 }
+
+export async function isUserAdmin(clerk_user_id) {
+    const sendData = { clerk_user_id: clerk_user_id };
+    const response = await fetch(API_BASE_URL + "/auth/isAdmin", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sendData),
+    });
+    const responseData = await response.json().catch(() => ({}));
+    return { status: response.status, ok: response.ok, data: responseData };
+}

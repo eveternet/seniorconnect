@@ -1,11 +1,13 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { isUserAdmin } from "../../../api";
 
 export default function Header() {
     const [isSidebarHidden, setIsSidebarHidden] = useState(true);
     const [sidebarClass, setSidebarClass] = useState("hidden");
-
+    const [displayAdminButton, setDisplayAdminButton] = useState(false);
+    const { user, isLoaded } = useUser();
     function toggleSidebar() {
         setIsSidebarHidden(!isSidebarHidden);
         if (isSidebarHidden) {
@@ -15,6 +17,25 @@ export default function Header() {
         }
     }
 
+    useEffect(() => {
+        if (isLoaded && user) {
+            isUserAdmin(user.id)
+                .then((data) => {
+                    if (data.status === 200) {
+                        if (data.data.is_admin) {
+                            setDisplayAdminButton(true);
+                        } else {
+                        }
+                    } else {
+                        console.log("Error checking admin status");
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error checking admin status");
+                });
+        }
+    }, [isLoaded, user]);
+
     return (
         <>
             {/* Header for desktop */}
@@ -22,15 +43,34 @@ export default function Header() {
                 <Link to="/" className="mx-5 my-auto text-2xl">
                     SeniorConnect
                 </Link>
-                <Link to="/notifications" className="my-auto mr-3 ml-auto p-2">
-                    <img
-                        src="https://4mn50hplg9.ufs.sh/f/0pp0UyuwO4xWHPNPkvT4KM8x9F6kgruRBD3YTmSIcGbefXCA"
-                        className="h-6 w-6"
-                    />
-                </Link>
+                {(displayAdminButton && (
+                    <>
+                        <Link to="/admin" className="my-auto mr-3 ml-auto p-2">
+                            Admin
+                        </Link>
+                        <Link to="/notifications" className="mx-3 my-auto p-2">
+                            <img
+                                src="https://4mn50hplg9.ufs.sh/f/0pp0UyuwO4xWHPNPkvT4KM8x9F6kgruRBD3YTmSIcGbefXCA"
+                                className="h-6 w-6"
+                            />
+                        </Link>
+                    </>
+                )) || (
+                    <Link
+                        to="/notifications"
+                        className="my-auto mr-3 ml-auto p-2"
+                    >
+                        <img
+                            src="https://4mn50hplg9.ufs.sh/f/0pp0UyuwO4xWHPNPkvT4KM8x9F6kgruRBD3YTmSIcGbefXCA"
+                            className="h-6 w-6"
+                        />
+                    </Link>
+                )}
+
                 <Link to="/chat" className="mx-3 my-auto p-2">
                     Chat
                 </Link>
+
                 <Link to="/events" className="mx-3 my-auto p-2">
                     Events
                 </Link>
