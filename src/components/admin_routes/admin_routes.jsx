@@ -11,7 +11,7 @@ export default function Admin_routes() {
             <AdminAuth />
             <div className="flex flex-row">
                 <Navbar />
-                <div className="w- ml-60 bg-blue-300">
+                <div className="ml-60 w-full bg-blue-300">
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route
