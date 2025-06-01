@@ -10,7 +10,7 @@ export default function Admin_routes() {
         <>
             <div className="flex flex-row">
                 <Navbar />
-                <div className="w- ml-40">
+                <div className="w- ml-60">
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route
