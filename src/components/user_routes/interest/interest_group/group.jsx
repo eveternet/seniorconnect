@@ -205,7 +205,7 @@ export default function InterestGroup() {
                 <SignedOut>
                     <button
                         onClick={() => navigate("/signin")}
-                        className="w-full max-w-xs rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:bg-blue-800"
+                        className="w-full rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:bg-blue-800"
                     >
                         Sign in to join
                     </button>
