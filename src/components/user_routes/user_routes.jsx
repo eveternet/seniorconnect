@@ -9,17 +9,22 @@ import Navbar from "./navbar/header"; // Assuming you have a Navbar
 export default function UserRoutes() {
     return (
         <>
-            <Navbar />
-            <Routes>
-                <Route path="signin" element={<SignIn />} />
-                <Route path="signup" element={<SignUp />} />
-                <Route path="/" element={<Home />} />
-                {/* <Route path="chat" element={<Chat />} /> */}
-                {/* <Route path="events" element={<Events />} /> */}
-                <Route path="interest-groups/*" element={<InterestGroups />} />
-                {/* <Route path="notifications" element={<Notifications />} /> */}
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div className="bg-blue-200">
+                <Navbar />
+                <Routes>
+                    <Route path="signin" element={<SignIn />} />
+                    <Route path="signup" element={<SignUp />} />
+                    <Route path="/" element={<Home />} />
+                    {/* <Route path="chat" element={<Chat />} /> */}
+                    {/* <Route path="events" element={<Events />} /> */}
+                    <Route
+                        path="interest-groups/*"
+                        element={<InterestGroups />}
+                    />
+                    {/* <Route path="notifications" element={<Notifications />} /> */}
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </div>
         </>
     );
 }
