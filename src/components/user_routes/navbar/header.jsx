@@ -134,13 +134,13 @@ export default function Header() {
                 </div>
             </nav>
             {displayAdminButton && (
-                <nav className="flex h-5 flex-row border-b-1 bg-black text-left text-base">
-                    <p className="pr-auto py-0.25 pl-0 text-white">
+                <nav className="flex h-6 flex-row border-b-1 bg-black text-left text-base">
+                    <p className="mr-auto ml-0 py-0.25 text-white">
                         Logged in as admin
                     </p>
                     <Link
                         to="/admin"
-                        className="pl-auto cursor-pointer py-0.25 pr-0 text-white"
+                        className="mr-0 ml-auto cursor-pointer py-0.25 text-white"
                     >
                         {" "}
                         Admin Panel{" "}
