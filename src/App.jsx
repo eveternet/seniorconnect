@@ -12,7 +12,7 @@ function App() {
                     <Auth />
                     <Routes>
                         <Route path="/*" element={<User_routes />} />
-                        <Route path="/admin/*" element={<AdminRoutes />} />
+                        <Route path="/admin/*" element={<Admin_routes />} />
                     </Routes>
                 </BrowserRouter>
             </div>
