@@ -186,7 +186,7 @@ export default function InterestGroup() {
                         <button
                             onClick={handleLeave}
                             disabled={joinLoading}
-                            className="w-full max-w-xs rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:cursor-pointer hover:bg-blue-800"
+                            className="w-full rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:cursor-pointer hover:bg-blue-800"
                         >
                             {joinLoading
                                 ? "Leaving..."
@@ -196,7 +196,7 @@ export default function InterestGroup() {
                         <button
                             onClick={handleJoin}
                             disabled={joinLoading}
-                            className="w-full max-w-xs rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:cursor-pointer hover:bg-blue-800"
+                            className="w-full rounded-lg bg-blue-900 px-4 py-2 font-semibold text-white shadow transition hover:cursor-pointer hover:bg-blue-800"
                         >
                             {joinLoading ? "Joining..." : "Join Interest Group"}
                         </button>
