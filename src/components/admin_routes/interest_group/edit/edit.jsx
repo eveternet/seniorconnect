@@ -2,7 +2,7 @@ import AdminEditGroupForm from "./AdminEditGroupForm";
 import { useUser } from "@clerk/clerk-react";
 import { useParams } from "react-router-dom";
 
-function AdminGroupManagementPage() {
+export default function AdminGroupManagementPage() {
     const { user, isLoaded } = useUser();
     const { id: groupIdToEdit } = useParams(); // expects route like /admin/interest-groups/:id
 
@@ -31,5 +31,3 @@ function AdminGroupManagementPage() {
         </div>
     );
 }
-
-export default AdminGroupManagementPage;
