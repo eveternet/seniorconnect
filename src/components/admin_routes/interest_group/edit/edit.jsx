@@ -21,7 +21,6 @@ export default function AdminGroupManagementPage() {
 
     return (
         <div>
-            <h1>Admin Group Editor</h1>
             <AdminEditGroupForm
                 groupId={groupIdToEdit}
                 adminClerkUserId={user.id}

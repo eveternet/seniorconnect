@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-// Import the actual API functions from your utility file
 import {
     editInterestGroup,
     getOneInterestGroupInfo,
     getAllMembersOfGroup,
 } from "../../../../api";
 
-function AdminEditGroupForm({
+export default function AdminEditGroupForm({
     groupId,
     adminClerkUserId,
     onGroupUpdated,
@@ -16,9 +15,9 @@ function AdminEditGroupForm({
     const [groupDescription, setGroupDescription] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [members, setMembers] = useState([]);
-    const [creatorId, setCreatorId] = useState(null); // Store the UUID of the group creator
-    const [selectedMemberToRemove, setSelectedMemberToRemove] = useState(null); // UUID
-    const [selectedNewOwner, setSelectedNewOwner] = useState(null); // UUID of new owner
+    const [creatorId, setCreatorId] = useState(null);
+    const [selectedMemberToRemove, setSelectedMemberToRemove] = useState(null);
+    const [selectedNewOwner, setSelectedNewOwner] = useState(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [message, setMessage] = useState("");
@@ -37,9 +36,8 @@ function AdminEditGroupForm({
             setGroupName(groupInfo.name);
             setGroupDescription(groupInfo.description);
             setImageUrl(groupInfo.image_url || "");
-            setCreatorId(groupInfo.creator_id); // This is now directly from the API response
+            setCreatorId(groupInfo.creator_id);
 
-            // Set original values for comparison
             setOriginalGroupName(groupInfo.name);
             setOriginalGroupDescription(groupInfo.description);
             setOriginalImageUrl(groupInfo.image_url || "");
@@ -47,8 +45,8 @@ function AdminEditGroupForm({
             const groupMembers = await getAllMembersOfGroup(groupId);
             setMembers(groupMembers);
         } catch (err) {
-            console.error("Failed to fetch group data:", err);
             onError?.(err.message);
+            setMessage("Error loading group data.");
         } finally {
             setLoading(false);
         }
@@ -66,7 +64,6 @@ function AdminEditGroupForm({
         const updates = {};
         let hasChanges = false;
 
-        // Compare current state with original fetched values for basic group info
         if (groupName !== originalGroupName) {
             updates.name = groupName;
             hasChanges = true;
@@ -79,8 +76,6 @@ function AdminEditGroupForm({
             updates.image_url = imageUrl;
             hasChanges = true;
         }
-
-        // Add member removal action if selected
         if (selectedMemberToRemove) {
             if (selectedMemberToRemove === creatorId) {
                 setMessage("Error: Cannot remove the group creator.");
@@ -90,8 +85,6 @@ function AdminEditGroupForm({
             updates.remove_member_id = selectedMemberToRemove;
             hasChanges = true;
         }
-
-        // Add ownership transfer action if selected
         if (selectedNewOwner) {
             if (selectedNewOwner === creatorId) {
                 setMessage(
@@ -100,13 +93,10 @@ function AdminEditGroupForm({
                 setSubmitting(false);
                 return;
             }
-            updates.new_owner_id = selectedNewOwner; // Use new_owner_id (UUID)
+            updates.new_owner_id = selectedNewOwner;
             hasChanges = true;
         }
-
-        // Only send if there are actual updates to group fields or actions
         if (!hasChanges) {
-            // Use the 'hasChanges' flag
             setMessage("No changes to submit.");
             setSubmitting(false);
             return;
@@ -115,14 +105,11 @@ function AdminEditGroupForm({
         try {
             await editInterestGroup(groupId, adminClerkUserId, updates);
             setMessage("Group updated successfully!");
-            // Refresh data after successful update
             await fetchGroupData();
-            // Clear selections after successful operation
             setSelectedMemberToRemove(null);
             setSelectedNewOwner(null);
-            onGroupUpdated?.(); // Callback for parent component
+            onGroupUpdated?.();
         } catch (err) {
-            console.error("Failed to update group:", err);
             setMessage(`Error: ${err.message}`);
             onError?.(err.message);
         } finally {
@@ -131,45 +118,43 @@ function AdminEditGroupForm({
     };
 
     if (loading) {
-        return <div>Loading group data...</div>;
+        return (
+            <div className="flex h-40 items-center justify-center">
+                <span className="font-semibold text-blue-700">
+                    Loading group data...
+                </span>
+            </div>
+        );
     }
 
     return (
-        <div
-            style={{
-                maxWidth: "600px",
-                margin: "auto",
-                padding: "20px",
-                border: "1px solid #ccc",
-                borderRadius: "8px",
-            }}
-        >
-            <h2>Edit Interest Group: {groupName}</h2>
+        <div className="mx-auto max-w-xl rounded-xl bg-white p-6 shadow-lg">
+            <h2 className="mb-4 text-2xl font-bold text-blue-900">
+                Edit Interest Group:{" "}
+                <span className="text-blue-700">{groupName}</span>
+            </h2>
             {message && (
-                <p
-                    style={{
-                        color: message.startsWith("Error") ? "red" : "green",
-                    }}
+                <div
+                    className={`mb-4 rounded px-4 py-2 ${
+                        message.startsWith("Error")
+                            ? "bg-red-100 text-red-700"
+                            : "bg-green-100 text-green-700"
+                    }`}
                 >
                     {message}
-                </p>
+                </div>
             )}
 
-            <form onSubmit={handleSubmit}>
-                {/* Section 1: Basic Group Details */}
-                <fieldset
-                    style={{
-                        marginBottom: "20px",
-                        padding: "15px",
-                        border: "1px solid #eee",
-                        borderRadius: "5px",
-                    }}
-                >
-                    <legend>Group Information</legend>
-                    <div style={{ marginBottom: "10px" }}>
+            <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Group Info */}
+                <fieldset className="rounded border border-blue-200 p-4">
+                    <legend className="font-semibold text-blue-800">
+                        Group Information
+                    </legend>
+                    <div className="mb-4">
                         <label
                             htmlFor="groupName"
-                            style={{ display: "block", marginBottom: "5px" }}
+                            className="mb-1 block font-medium"
                         >
                             Group Name:
                         </label>
@@ -178,17 +163,13 @@ function AdminEditGroupForm({
                             id="groupName"
                             value={groupName}
                             onChange={(e) => setGroupName(e.target.value)}
-                            style={{
-                                width: "100%",
-                                padding: "8px",
-                                boxSizing: "border-box",
-                            }}
+                            className="w-full rounded border border-blue-300 px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         />
                     </div>
-                    <div style={{ marginBottom: "10px" }}>
+                    <div className="mb-4">
                         <label
                             htmlFor="groupDescription"
-                            style={{ display: "block", marginBottom: "5px" }}
+                            className="mb-1 block font-medium"
                         >
                             Description:
                         </label>
@@ -199,17 +180,13 @@ function AdminEditGroupForm({
                                 setGroupDescription(e.target.value)
                             }
                             rows="4"
-                            style={{
-                                width: "100%",
-                                padding: "8px",
-                                boxSizing: "border-box",
-                            }}
+                            className="w-full rounded border border-blue-300 px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         ></textarea>
                     </div>
-                    <div style={{ marginBottom: "10px" }}>
+                    <div>
                         <label
                             htmlFor="imageUrl"
-                            style={{ display: "block", marginBottom: "5px" }}
+                            className="mb-1 block font-medium"
                         >
                             Image URL:
                         </label>
@@ -218,39 +195,26 @@ function AdminEditGroupForm({
                             id="imageUrl"
                             value={imageUrl}
                             onChange={(e) => setImageUrl(e.target.value)}
-                            style={{
-                                width: "100%",
-                                padding: "8px",
-                                boxSizing: "border-box",
-                            }}
+                            className="w-full rounded border border-blue-300 px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         />
                         {imageUrl && (
                             <img
                                 src={imageUrl}
                                 alt="Group Preview"
-                                style={{
-                                    maxWidth: "100px",
-                                    height: "auto",
-                                    marginTop: "10px",
-                                    border: "1px solid #ddd",
-                                    borderRadius: "4px",
-                                }}
+                                className="mt-3 max-w-xs rounded border border-gray-200"
                             />
                         )}
                     </div>
                 </fieldset>
 
-                {/* Section 2: Remove Members */}
-                <fieldset
-                    style={{
-                        marginBottom: "20px",
-                        padding: "15px",
-                        border: "1px solid #eee",
-                        borderRadius: "5px",
-                    }}
-                >
-                    <legend>Remove Members</legend>
-                    <p>Select a member to remove (cannot remove creator):</p>
+                {/* Remove Members */}
+                <fieldset className="rounded border border-blue-200 p-4">
+                    <legend className="font-semibold text-blue-800">
+                        Remove Members
+                    </legend>
+                    <p className="mb-2 text-sm text-blue-700">
+                        Select a member to remove (cannot remove creator):
+                    </p>
                     {members.length > 0 ? (
                         <select
                             value={selectedMemberToRemove || ""}
@@ -259,84 +223,70 @@ function AdminEditGroupForm({
                                     e.target.value || null,
                                 )
                             }
-                            style={{
-                                width: "100%",
-                                padding: "8px",
-                                marginBottom: "10px",
-                                boxSizing: "border-box",
-                            }}
+                            className="w-full rounded border border-blue-300 px-3 py-2"
                         >
                             <option value="">-- Select Member --</option>
                             {members.map((member) => (
                                 <option
                                     key={member.user_id}
                                     value={member.user_id}
-                                    disabled={member.user_id === creatorId} // Disable if it's the creator
+                                    disabled={member.user_id === creatorId}
                                 >
-                                    {member.display_name}{" "}
+                                    {member.display_name}
                                     {member.user_id === creatorId &&
-                                        "(Creator)"}
+                                        " (Creator)"}
                                 </option>
                             ))}
                         </select>
                     ) : (
-                        <p>No members to remove.</p>
+                        <p className="text-gray-500">No members to remove.</p>
                     )}
                 </fieldset>
 
-                {/* Section 3: Transfer Ownership */}
-                <fieldset
-                    style={{
-                        marginBottom: "20px",
-                        padding: "15px",
-                        border: "1px solid #eee",
-                        borderRadius: "5px",
-                    }}
-                >
-                    <legend>Transfer Ownership</legend>
-                    <p>Select a new owner from existing members:</p>
+                {/* Transfer Ownership */}
+                <fieldset className="rounded border border-blue-200 p-4">
+                    <legend className="font-semibold text-blue-800">
+                        Transfer Ownership
+                    </legend>
+                    <p className="mb-2 text-sm text-blue-700">
+                        Select a new owner from existing members:
+                    </p>
                     {members.length > 0 ? (
                         <select
                             value={selectedNewOwner || ""}
                             onChange={(e) =>
                                 setSelectedNewOwner(e.target.value || null)
                             }
-                            style={{
-                                width: "100%",
-                                padding: "8px",
-                                marginBottom: "10px",
-                                boxSizing: "border-box",
-                            }}
+                            className="w-full rounded border border-blue-300 px-3 py-2"
                         >
                             <option value="">-- Select New Owner --</option>
                             {members.map((member) => (
                                 <option
                                     key={member.user_id}
                                     value={member.user_id}
-                                    disabled={member.user_id === creatorId} // Disable if it's the current creator
+                                    disabled={member.user_id === creatorId}
                                 >
-                                    {member.display_name}{" "}
+                                    {member.display_name}
                                     {member.user_id === creatorId &&
-                                        "(Current Creator)"}
+                                        " (Current Creator)"}
                                 </option>
                             ))}
                         </select>
                     ) : (
-                        <p>No other members to transfer ownership to.</p>
+                        <p className="text-gray-500">
+                            No other members to transfer ownership to.
+                        </p>
                     )}
                 </fieldset>
 
                 <button
                     type="submit"
                     disabled={submitting}
-                    style={{
-                        padding: "10px 20px",
-                        backgroundColor: "#007bff",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: submitting ? "not-allowed" : "pointer",
-                    }}
+                    className={`w-full rounded py-2 font-semibold transition ${
+                        submitting
+                            ? "cursor-not-allowed bg-blue-300"
+                            : "bg-blue-700 text-white hover:bg-blue-800"
+                    }`}
                 >
                     {submitting ? "Updating..." : "Save Changes"}
                 </button>
@@ -344,5 +294,3 @@ function AdminEditGroupForm({
         </div>
     );
 }
-
-export default AdminEditGroupForm;
