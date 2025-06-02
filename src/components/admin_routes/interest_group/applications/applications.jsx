@@ -55,7 +55,7 @@ export default function InterestGroupApplicationsAdmin() {
                 </div>
             )}
             <h1 className="mb-6 text-2xl font-bold text-blue-900">
-                Interest Group Applications (Admin)
+                Interest Group Applications
             </h1>
             {loading ? (
                 <div className="text-center text-gray-500">Loading...</div>
