@@ -128,7 +128,7 @@ export default function AdminEditGroupForm({
     }
 
     return (
-        <div className="mx-auto mt-10 max-w-xl rounded-xl bg-white p-6 shadow-lg">
+        <div className="mx-auto my-auto max-w-xl rounded-xl bg-white p-6 shadow-lg">
             <h2 className="mb-4 text-2xl font-bold text-blue-900">
                 Edit Interest Group:{" "}
                 <span className="text-blue-700">{groupName}</span>
