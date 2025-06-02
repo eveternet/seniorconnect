@@ -4,11 +4,7 @@ import {
     editInterestGroup,
     getOneInterestGroupInfo,
     getAllMembersOfGroup,
-} from "./api/interestGroups"; // ADJUST THIS PATH BASED ON YOUR PROJECT STRUCTURE
-
-// The API_BASE_URL is now defined inside api/interestGroups.js,
-// so you don't need it here unless you use it for other direct fetch calls.
-// const API_BASE_URL = "http://localhost:5000"; // REMOVE THIS LINE
+} from "../../../../api";
 
 function AdminEditGroupForm({
     groupId,
